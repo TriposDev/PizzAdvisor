@@ -106,11 +106,11 @@ function switchPanel(panelToShow, skipAnimation = false) {
 }
 
 const votes = {
-    gusto: 0,
-    croccantezza: 0,
-    filamento: 0,
-    vista: 0,
-    costo: 0
+    taste: 0,
+    crunchiness: 0,
+    cheesePull: 0,
+    appearance: 0,
+    cost: 0
 };
 
 const totalSteps = 6;

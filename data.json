@@ -1,47 +1,68 @@
 {
   "pizzas": [
     {
-      "id": "1783091535035",
-      "name": "Buitoni",
+      "id": "1783093087683",
+      "name": "ca",
       "brand": "",
-      "cost": 4
+      "cost": 3
     }
   ],
   "session": {
-    "active": false,
-    "currentPizzaId": "1783091535035",
-    "sessionId": "1783091537860",
-    "resultsRevealed": false
+    "active": true,
+    "currentPizzaId": "1783093087683",
+    "sessionId": "1783093095186",
+    "resultsRevealed": true
   },
-  "votes": [],
+  "votes": [
+    {
+      "pizzaId": "1783093087683",
+      "voterId": "user_z3jzrozf4",
+      "taste": 3,
+      "crunchiness": 3,
+      "cheesePull": 4,
+      "appearance": 4,
+      "cost": 3,
+      "timestamp": "2026-07-03T15:43:10.553Z"
+    },
+    {
+      "pizzaId": "1783093087683",
+      "voterId": "user_kt5zkqy9g",
+      "taste": 2,
+      "crunchiness": 3,
+      "cheesePull": 2,
+      "appearance": 3,
+      "cost": 2,
+      "timestamp": "2026-07-03T15:43:48.013Z"
+    }
+  ],
   "settings": {
     "steps": [
       {
-        "id": "gusto",
+        "id": "taste",
         "name": "Gusto",
         "question": "Che voto daresti al Gusto?",
         "emoji": "😋"
       },
       {
-        "id": "croccantezza",
+        "id": "crunchiness",
         "name": "Croccantezza",
         "question": "Com'è la Croccantezza?",
         "emoji": "🥖"
       },
       {
-        "id": "filamento",
+        "id": "cheesePull",
         "name": "Filamento",
         "question": "Valuta il Filamento!",
         "emoji": "🧀"
       },
       {
-        "id": "vista",
+        "id": "appearance",
         "name": "Vista",
         "question": "E alla Vista?",
         "emoji": "👁️"
       },
       {
-        "id": "costo",
+        "id": "cost",
         "name": "Qualità / Prezzo",
         "question": "Qualità / Prezzo?",
         "emoji": "💰"

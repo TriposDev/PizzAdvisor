@@ -1,56 +1,55 @@
 # PizzAdvisor
 
-PizzAdvisor è un'applicazione web per gestire sessioni di degustazione e valutazione di pizze. Permette a un gruppo di utenti di votare diverse pizze in tempo reale, mentre un amministratore gestisce le sessioni, le pizze disponibili e i risultati.
+PizzAdvisor is a web application for managing pizza tasting and evaluation sessions. It allows a group of users to vote on different pizzas in real-time, while an administrator manages the active sessions, the available pizzas, and the leaderboard results.
 
-## Funzionalità Principali
+## Main Features
 
-### Lato Utente
-- **Votazione in tempo reale**: Gli utenti possono votare la pizza attualmente in degustazione (impostata dall'amministratore).
-- **Criteri di valutazione**: La valutazione si basa su parametri di voto configurabili (di default: Gusto, Croccantezza, Filamento, Vista, Qualità/Prezzo).
-- **Classifica**: Quando l'amministratore rivela i risultati, gli utenti possono visualizzare la classifica finale con i punteggi medi calcolati.
+### User Side
+- **Real-time Voting**: Users can vote on the pizza currently being tasted (set by the administrator).
+- **Evaluation Criteria**: Voting is based on configurable parameters (default: Taste, Crunchiness, Cheese Pull, Appearance, Value).
+- **Leaderboard**: When the administrator reveals the results, users can view the final leaderboard with the total calculated scores.
 
-### Lato Amministratore
-- **Gestione Pizze**: Aggiunta, modifica ed eliminazione delle pizze (nome, marca, costo).
-- **Gestione Sessioni**: Avvio e interruzione delle sessioni di voto e selezione della pizza corrente.
-- **Rivelazione Risultati**: Possibilità di mostrare o nascondere la classifica agli utenti.
-- **Gestione Parametri**: Configurazione personalizzata dei parametri di valutazione.
-- **Reset**: Azzeramento dei voti per iniziare una nuova competizione/sessione.
+### Administrator Side
+- **Pizza Management**: Add, edit, and delete pizzas (name, brand, cost).
+- **Session Management**: Start and stop voting sessions, and select the current pizza to vote on.
+- **Reveal Results**: Ability to show or hide the leaderboard for the users.
+- **Reset**: Reset votes to start a new competition/session from scratch.
 
-## Installazione e Avvio
+## Installation and Setup
 
-1. Assicurati di avere [Node.js](https://nodejs.org/) installato.
-2. Posizionati nella cartella del progetto: `c:\repos\pizzAdvisor`.
-3. Installa le dipendenze:
+1. Ensure you have [Node.js](https://nodejs.org/) installed.
+2. Navigate to the project directory: `c:\repos\pizzAdvisor`.
+3. Install the dependencies:
    ```bash
    npm install
    ```
-4. Avvia il server:
+4. Start the server:
    ```bash
    npm start
    ```
-   *(oppure usa `npm run dev` / `node server.js`)*
-5. Apri il browser all'indirizzo: [http://localhost:3000](http://localhost:3000)
+   *(or use `npm run dev` / `node server.js`)*
+5. Open your browser at: [http://localhost:3000](http://localhost:3000)
 
-## Utilizzo
+## Usage
 
-### Accesso Utente
-Gli utenti accedono semplicemente alla pagina principale (es. `http://localhost:3000`). Se è attiva una sessione di voto per una pizza, vedranno il modulo per esprimere il proprio giudizio; altrimenti visualizzeranno un messaggio di attesa o la classifica (se quest'ultima è stata svelata dall'amministratore).
+### User Access
+Users simply navigate to the main page (e.g., `http://localhost:3000`). If a voting session is active, they will see the form to submit their rating. Otherwise, they will see a waiting message or the final leaderboard (if revealed by the admin).
 
-### Accesso Amministratore
-L'area di amministrazione si trova alla pagina `/admin.html` (es. `http://localhost:3000/admin.html`).
-- **PIN di default per l'accesso**: `6767`
+### Administrator Access
+The admin area can be accessed via the `/admin` route (e.g., `http://localhost:3000/admin`).
+- **Default access PIN**: `6767`
 
-## Struttura del Progetto
+## Project Structure
 
-- `server.js`: Server backend Node.js/Express. Gestisce le API REST e serve i file statici.
-- `data.json`: Database locale (file JSON) dove vengono salvate permanentemente pizze, voti, stato delle sessioni e impostazioni.
-- `public/`: Contiene il frontend dell'applicazione.
-  - `index.html` / `app.js`: Interfaccia utente.
-  - `admin.html` / `admin.js`: Interfaccia di amministrazione.
-  - `style.css`: Stili dell'applicazione.
-  - `images/`: Risorse grafiche.
-- `package.json`: Definizione del progetto, dipendenze (Express) e script.
+- `server.js`: Node.js/Express backend server. Manages REST APIs and serves static files.
+- `data.json`: Local database (JSON file) that permanently stores pizzas, votes, session states, and settings.
+- `public/`: Contains the frontend of the application.
+  - `index.html` / `app.js`: User interface.
+  - `admin.html` / `admin.js`: Administrator interface.
+  - `style.css`: Application styles.
+  - `images/`: Graphic assets.
+- `package.json`: Project definition, dependencies (Express), and scripts.
 
-## Note di Sviluppo
-- I dati sono salvati localmente nel file `data.json`. Se il file viene svuotato o se si riscontrano problemi di lettura, l'app genera un fallback con valori di default, e popolerà/creerà il file al primo salvataggio utile.
-- Questo `README.md` verrà aggiornato ad ogni modifica importante per mantenere traccia del funzionamento del portale.
+## Development Notes
+- Data is saved locally in the `data.json` file. If the file is emptied or there are reading issues, the app generates a fallback with default values and will populate/create the file upon the first save.
+- This `README.md` is updated with every major change to keep track of the portal's functionality.

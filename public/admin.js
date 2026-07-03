@@ -202,11 +202,11 @@ async function renderLeaderboard() {
             <td><strong>${s.name}</strong><br><small>Costo: €${s.cost}</small></td>
             <td><strong>${s.totalScore}</strong></td>
             <td>${s.count}</td>
-            <td>${s.avg && s.avg.gusto ? s.avg.gusto.toFixed(1) : '-'}</td>
-            <td>${s.avg && s.avg.croccantezza ? s.avg.croccantezza.toFixed(1) : '-'}</td>
-            <td>${s.avg && s.avg.filamento ? s.avg.filamento.toFixed(1) : '-'}</td>
-            <td>${s.avg && s.avg.vista ? s.avg.vista.toFixed(1) : '-'}</td>
-            <td>${s.avg && s.avg.costo ? s.avg.costo.toFixed(1) : '-'}</td>
+            <td>${s.avg && s.avg.taste ? s.avg.taste.toFixed(1) : '-'}</td>
+            <td>${s.avg && s.avg.crunchiness ? s.avg.crunchiness.toFixed(1) : '-'}</td>
+            <td>${s.avg && s.avg.cheesePull ? s.avg.cheesePull.toFixed(1) : '-'}</td>
+            <td>${s.avg && s.avg.appearance ? s.avg.appearance.toFixed(1) : '-'}</td>
+            <td>${s.avg && s.avg.cost ? s.avg.cost.toFixed(1) : '-'}</td>
         `;
         tbody.appendChild(tr);
     });

@@ -43,27 +43,27 @@ app.get('/api/session', (req, res) => {
     res.json(data.session);
 });
 
-
-
 app.post('/api/vote', (req, res) => {
     const data = readData();
     if (!data.session.active || !data.session.currentPizzaId) {
         return res.status(400).json({ error: 'La sessione di votazione non è attiva.' });
     }
 
-    const { voterId, gusto, croccantezza, filamento, vista, costo } = req.body;
+    const { voterId, taste, crunchiness, cheesePull, appearance, cost } = req.body;
     
-    if (!voterId || !gusto || !croccantezza || !filamento || !vista || !costo) {
+    if (!voterId || taste === undefined || crunchiness === undefined || cheesePull === undefined || appearance === undefined || cost === undefined) {
         return res.status(400).json({ error: 'Tutti i campi sono obbligatori.' });
     }
 
+    const pizzaId = data.session.currentPizzaId;
+
     // Controlla se l'utente ha già votato questa pizza
-    const existingVoteIndex = data.votes.findIndex(v => v.pizzaId === data.session.currentPizzaId && v.voterId === voterId);
+    const existingVoteIndex = data.votes.findIndex(v => v.pizzaId === pizzaId && v.voterId === voterId);
     
     const newVote = {
-        pizzaId: data.session.currentPizzaId,
+        pizzaId,
         voterId,
-        gusto, croccantezza, filamento, vista, costo,
+        taste, crunchiness, cheesePull, appearance, cost,
         timestamp: new Date().toISOString()
     };
 
@@ -196,23 +196,23 @@ app.get('/api/admin/leaderboard', adminAuth, (req, res) => {
         if (count === 0) return { ...pizza, totalScore: 0, count: 0 };
         
         const sum = pizzaVotes.reduce((acc, v) => ({
-            gusto: acc.gusto + (v.gusto || (v.scores && v.scores.gusto) || 0),
-            croccantezza: acc.croccantezza + (v.croccantezza || (v.scores && v.scores.croccantezza) || 0),
-            filamento: acc.filamento + (v.filamento || (v.scores && v.scores.filamento) || 0),
-            vista: acc.vista + (v.vista || (v.scores && v.scores.vista) || 0),
-            costo: acc.costo + (v.costo || (v.scores && v.scores.costo) || 0)
-        }), { gusto: 0, croccantezza: 0, filamento: 0, vista: 0, costo: 0 });
+            taste: acc.taste + (v.taste || (v.scores && v.scores.taste) || 0),
+            crunchiness: acc.crunchiness + (v.crunchiness || (v.scores && v.scores.crunchiness) || 0),
+            cheesePull: acc.cheesePull + (v.cheesePull || (v.scores && v.scores.cheesePull) || 0),
+            appearance: acc.appearance + (v.appearance || (v.scores && v.scores.appearance) || 0),
+            cost: acc.cost + (v.cost || (v.scores && v.scores.cost) || 0)
+        }), { taste: 0, crunchiness: 0, cheesePull: 0, appearance: 0, cost: 0 });
         
         const avg = {
-            gusto: sum.gusto / count,
-            croccantezza: sum.croccantezza / count,
-            filamento: sum.filamento / count,
-            vista: sum.vista / count,
-            costo: sum.costo / count
+            taste: sum.taste / count,
+            crunchiness: sum.crunchiness / count,
+            cheesePull: sum.cheesePull / count,
+            appearance: sum.appearance / count,
+            cost: sum.cost / count
         };
         
         // Il punteggio totale ora è la somma di tutti i voti anziché la media
-        const totalScore = sum.gusto + sum.croccantezza + sum.filamento + sum.vista + sum.costo;
+        const totalScore = sum.taste + sum.crunchiness + sum.cheesePull + sum.appearance + sum.cost;
         
         return {
             ...pizza,
