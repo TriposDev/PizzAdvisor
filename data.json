@@ -1,9 +1,16 @@
 {
-  "pizzas": [],
+  "pizzas": [
+    {
+      "id": "1783091535035",
+      "name": "Buitoni",
+      "brand": "",
+      "cost": 4
+    }
+  ],
   "session": {
     "active": false,
-    "currentPizzaId": null,
-    "sessionId": "1783089895936",
+    "currentPizzaId": "1783091535035",
+    "sessionId": "1783091537860",
     "resultsRevealed": false
   },
   "votes": [],
