@@ -211,7 +211,8 @@ app.get('/api/admin/leaderboard', adminAuth, (req, res) => {
             costo: sum.costo / count
         };
         
-        const totalScore = (avg.gusto + avg.croccantezza + avg.filamento + avg.vista + avg.costo).toFixed(2);
+        // Il punteggio totale ora è la somma di tutti i voti anziché la media
+        const totalScore = sum.gusto + sum.croccantezza + sum.filamento + sum.vista + sum.costo;
         
         return {
             ...pizza,
@@ -260,9 +261,9 @@ app.get('/api/leaderboard', (req, res) => {
         
         let totalSum = 0;
         steps.forEach(s => {
-            totalSum += sum[s.id] / count;
+            totalSum += sum[s.id]; // Somma diretta senza dividere per count
         });
-        return { ...pizza, totalScore: totalSum.toFixed(2), count };
+        return { ...pizza, totalScore: totalSum, count };
     });
     
     scores.sort((a, b) => b.totalScore - a.totalScore);
