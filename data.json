@@ -1,0 +1,114 @@
+{
+  "pizzas": [
+    {
+      "id": "1782924873436",
+      "name": "Cameo",
+      "brand": "",
+      "cost": 2
+    },
+    {
+      "id": "1782924883236",
+      "name": "buitoni",
+      "brand": "",
+      "cost": 3
+    },
+    {
+      "id": "1782934672032",
+      "name": "Ristorante",
+      "brand": "",
+      "cost": 2
+    }
+  ],
+  "session": {
+    "active": true,
+    "currentPizzaId": "1782924883236",
+    "sessionId": "1783089895936",
+    "resultsRevealed": true
+  },
+  "votes": [
+    {
+      "pizzaId": "1782924883236",
+      "voterId": "user_kt5zkqy9g",
+      "gusto": 4,
+      "croccantezza": 4,
+      "filamento": 5,
+      "vista": 4,
+      "costo": 4,
+      "timestamp": "2026-07-03T14:45:13.779Z"
+    },
+    {
+      "pizzaId": "1782934672032",
+      "voterId": "user_kt5zkqy9g",
+      "gusto": 4,
+      "croccantezza": 3,
+      "filamento": 4,
+      "vista": 2,
+      "costo": 5,
+      "timestamp": "2026-07-03T13:51:00.410Z"
+    },
+    {
+      "pizzaId": "1782924873436",
+      "voterId": "user_kt5zkqy9g",
+      "gusto": 3,
+      "croccantezza": 4,
+      "filamento": 5,
+      "vista": 3,
+      "costo": 4,
+      "timestamp": "2026-07-03T14:38:33.669Z"
+    },
+    {
+      "pizzaId": "1782924873436",
+      "voterId": "user_903dm7gtd",
+      "gusto": 3,
+      "croccantezza": 4,
+      "filamento": 4,
+      "vista": 4,
+      "costo": 1,
+      "timestamp": "2026-07-03T14:41:49.801Z"
+    },
+    {
+      "pizzaId": "1782924883236",
+      "voterId": "user_903dm7gtd",
+      "gusto": 4,
+      "croccantezza": 3,
+      "filamento": 2,
+      "vista": 3,
+      "costo": 4,
+      "timestamp": "2026-07-03T14:45:12.940Z"
+    }
+  ],
+  "settings": {
+    "steps": [
+      {
+        "id": "gusto",
+        "name": "Gusto",
+        "question": "Che voto daresti al Gusto?",
+        "emoji": "😋"
+      },
+      {
+        "id": "croccantezza",
+        "name": "Croccantezza",
+        "question": "Com'è la Croccantezza?",
+        "emoji": "🥖"
+      },
+      {
+        "id": "filamento",
+        "name": "Filamento",
+        "question": "Valuta il Filamento!",
+        "emoji": "🧀"
+      },
+      {
+        "id": "vista",
+        "name": "Vista",
+        "question": "E alla Vista?",
+        "emoji": "👁️"
+      },
+      {
+        "id": "costo",
+        "name": "Qualità / Prezzo",
+        "question": "Qualità / Prezzo?",
+        "emoji": "💰"
+      }
+    ]
+  }
+}

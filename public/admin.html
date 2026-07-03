@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - PizzAdvisor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img src="images/logo_horizontal_web.png" alt="PizzAdvisor Logo" style="width: 100%; max-width: 600px; object-fit: contain;">
+        </div>
+        <p class="subtitle" style="margin-top: 0.5rem;">Pannello Amministratore</p>
+    </header>
+
+    <main class="container admin-container">
+        <!-- Login Panel -->
+        <div id="login-panel" class="glass-panel">
+            <h2>Accesso Riservato</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>PIN (4 cifre)</label>
+                    <input type="password" id="pin-input" required maxlength="4">
+                </div>
+                <button type="submit" class="btn">Entra</button>
+            </form>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="dashboard" class="hidden">
+            
+            <!-- Gestione Sessione -->
+            <div class="glass-panel">
+                <h2>🎮 Controllo Sessione</h2>
+                <div class="form-group">
+                    <label>Seleziona Pizza in Degustazione</label>
+                    <select id="pizza-select">
+                        <option value="">-- Seleziona una pizza --</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button id="btn-start" class="btn btn-start">Avvia Sessione</button>
+                    <button id="btn-stop" class="btn btn-danger hidden">Sospendi Sessione</button>
+                </div>
+                <p id="session-status" style="margin-top: 1rem; color: var(--text-secondary);"></p>
+            </div>
+
+            <!-- Inserimento Pizze -->
+            <div class="glass-panel">
+                <h2>🍕 Gestione Pizze</h2>
+                <form id="add-pizza-form">
+                    <div class="form-group">
+                        <label>Nome / Modello</label>
+                        <input type="text" id="pizza-name" required placeholder="Es: Margherita Buitoni">
+                    </div>
+                    <div class="form-group">
+                        <label>Marca (Opzionale)</label>
+                        <input type="text" id="pizza-brand" placeholder="Es: Buitoni">
+                    </div>
+                    <div class="form-group">
+                        <label>Costo Reale (€)</label>
+                        <input type="number" id="pizza-cost" step="0.01" required placeholder="Es: 3.50">
+                    </div>
+                    <button type="submit" class="btn">Aggiungi Pizza</button>
+                </form>
+                
+                <ul id="pizzas-list" class="pizza-list">
+                    <!-- Pizze inserite tramite JS -->
+                </ul>
+            </div>
+
+
+
+            <!-- Classifica -->
+            <div class="glass-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="margin: 0;">🏆 Classifica Live</h2>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button id="btn-toggle-results" class="btn" style="width: auto; background: rgba(51, 153, 255, 0.2); border: 1px solid rgba(51, 153, 255, 0.5); padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 20px; box-shadow: none;">👀 Svela Risultati</button>
+                        <button id="btn-reset-leaderboard" class="btn" style="width: auto; background: rgba(255, 51, 102, 0.2); border: 1px solid rgba(255, 51, 102, 0.5); padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 20px; box-shadow: none;">🗑️ Azzera</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="leaderboard-table" id="leaderboard-table">
+                        <thead id="leaderboard-head">
+                            <tr>
+                                <th>Pos</th>
+                                <th>Pizza</th>
+                                <th>Totale</th>
+                                <th>Voti</th>
+                                <th>Gusto</th>
+                                <th>Crocc.</th>
+                                <th>Filam.</th>
+                                <th>Vista</th>
+                                <th>Q/P</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body">
+                            <!-- JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <script src="admin.js"></script>
+</body>
+</html>

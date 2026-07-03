@@ -1,0 +1,14 @@
+{
+  "name": "pizzadvisor",
+  "version": "1.0.0",
+  "description": "PizzAdvisor App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "jimp": "^1.6.1"
+  }
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>PizzAdvisor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- SVG Defs (Pizza Pattern) definiti globalmente -->
+    <svg style="width: 0; height: 0; position: absolute;" aria-hidden="true">
+        <defs>
+            <pattern id="pizzaPattern" patternUnits="userSpaceOnUse" width="100" height="100" x="-50" y="-50">
+                <!-- Cornicione -->
+                <circle cx="50" cy="50" r="48" fill="#e8984e" />
+                <circle cx="50" cy="50" r="45" fill="#d87f33" />
+                <!-- Pomodoro -->
+                <circle cx="50" cy="50" r="41" fill="#d32f2f" />
+                <!-- Mozzarella -->
+                <circle cx="50" cy="50" r="38" fill="#ffd54f" />
+                <circle cx="35" cy="35" r="8" fill="#fff59d" opacity="0.6" />
+                <circle cx="65" cy="45" r="7" fill="#fff59d" opacity="0.6" />
+                <circle cx="50" cy="65" r="9" fill="#fff59d" opacity="0.6" />
+                <!-- Salame piccante -->
+                <circle cx="50" cy="18" r="6.5" fill="#b71c1c" />
+                <circle cx="75" cy="55" r="6.5" fill="#b71c1c" />
+                <circle cx="30" cy="68" r="6.5" fill="#b71c1c" />
+                <circle cx="22" cy="38" r="6.5" fill="#b71c1c" />
+                <circle cx="55" cy="40" r="6.5" fill="#b71c1c" />
+                <!-- Basilico (triangolini) -->
+                <polygon points="50,50 45,58 55,53" fill="#2e7d32" />
+                <polygon points="60,25 65,20 70,30" fill="#2e7d32" />
+                <polygon points="35,25 30,30 25,20" fill="#2e7d32" />
+            </pattern>
+        </defs>
+    </svg>
+
+    <header>
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img src="images/logo_horizontal_web.png" alt="PizzAdvisor Logo" style="width: 100%; max-width: 600px; object-fit: contain;">
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Messaggio Nessuna Sessione -->
+        <div class="message-box" id="no-session-msg">
+            <div class="pizza-oven-container" style="margin-bottom: 2rem;">
+                <svg viewBox="0 0 200 150" class="fun-oven" style="width: 100%; max-width: 250px; margin: 0 auto; display: block; overflow: visible;">
+                    <!-- Sfondo Forno Esterno -->
+                    <path d="M 20 130 C 20 10, 180 10, 180 130 Z" fill="#1a1a2e" stroke="#2b2d42" stroke-width="4"/>
+                    <!-- Cupola Mattoni -->
+                    <path d="M 35 130 C 35 30, 165 30, 165 130 Z" fill="#8d99ae" />
+                    <path d="M 50 130 C 50 50, 150 50, 150 130 Z" fill="#4a4e69" />
+                    <!-- Bocca del Forno -->
+                    <path d="M 70 130 C 70 80, 130 80, 130 130 Z" fill="#0b090a" />
+                    
+                    <!-- Fiamme -->
+                    <g class="oven-flames" style="transform-origin: 100px 130px;">
+                        <path d="M 85 130 Q 90 90 95 130 Q 100 80 105 130 Q 110 95 115 130" fill="#e63946" />
+                        <path d="M 90 130 Q 95 100 100 130 Q 105 95 110 130" fill="#f4a261" />
+                        <path d="M 95 130 Q 100 115 105 130" fill="#e9c46a" />
+                    </g>
+                    
+                    <!-- Pala e Pizza -->
+                    <g class="pizza-peel">
+                        <!-- Manico Pala -->
+                        <rect x="-60" y="127" width="80" height="3" fill="#9c6644" />
+                        <!-- Piatto Pala -->
+                        <ellipse cx="25" cy="128" rx="16" ry="3" fill="#e6ccb2" />
+                        <!-- Pizza Base -->
+                        <g class="cooking-pizza">
+                            <ellipse cx="25" cy="127" rx="14" ry="2.5" fill="#f4a261" />
+                            <ellipse cx="25" cy="126" rx="12" ry="1.8" fill="#e76f51" />
+                            <!-- Condimenti -->
+                            <ellipse cx="21" cy="125" rx="2" ry="1" fill="#e9c46a" />
+                            <ellipse cx="29" cy="126" rx="2.5" ry="1" fill="#e9c46a" />
+                            <ellipse cx="25" cy="124" rx="1.5" ry="0.8" fill="#2a9d8f" />
+                            <ellipse cx="24" cy="127" rx="1.5" ry="0.8" fill="#e9c46a" />
+                        </g>
+                    </g>
+                    
+                    <!-- Base Forno Frontale -->
+                    <rect x="15" y="130" width="170" height="15" fill="#2b2d42" rx="2" />
+                    <rect x="15" y="130" width="170" height="4" fill="#4a4e69" rx="2" />
+                </svg>
+            </div>
+            
+            <h2 style="color: var(--secondary-color); margin-bottom: 0.5rem;">Forno in riscaldamento...</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.5; margin-bottom: 3rem;">Il maestro pizzaiolo sta infornando e controllando la cottura.</p>
+
+            <div class="fun-fact-bubble" style="margin-top: 2rem; margin-bottom: 0;">
+                <p class="fun-fact-text" style="margin-top: 0.5rem; line-height: 1.4; color: #333;"></p>
+            </div>
+        </div>
+
+        <!-- Message Box when user has already voted -->
+        <div id="already-voted-msg" class="glass-panel message-box hidden">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">✅</h2>
+            <h2>Voto Registrato!</h2>
+            <p>Hai già votato per questa pizza.</p>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 1rem; margin-bottom: 2rem;">Attendi che l'amministratore avvii una nuova sessione per un'altra pizza.</p>
+            
+            <button class="btn" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%); margin-bottom: 3rem;" onclick="goToLeaderboard()">🏆 Vai alla Classifica Finale</button>
+
+            <div class="fun-fact-bubble" style="margin-top: 2rem; margin-bottom: 0;">
+                <p class="fun-fact-text" style="margin-top: 0.5rem; line-height: 1.4; color: #333;"></p>
+            </div>
+        </div>
+
+        <!-- Voting Form -->
+        <div id="voting-panel" class="glass-panel hidden">
+            
+            <form id="vote-form">
+                
+                <div class="step-progress">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+
+                <div class="step-wrapper">
+                    <!-- Steps 1 to 5 (Categories) -->
+                    <div class="step active" data-step="1">
+                        <label class="step-label">Che voto daresti al <span>Gusto?</span><span style="display: block; margin-top: 0.3rem; font-size: 1.2em;">😋</span></label>
+                        <div class="pizza-display">
+                            <svg viewBox="-50 -50 100 100" class="pizza-builder">
+                                <g class="empty-plate">
+                                    <circle cx="0" cy="0" r="49" fill="#fdfdfd" stroke="#e0e0e0" stroke-width="1" />
+                                    <circle cx="0" cy="0" r="35" fill="#ffffff" stroke="#eeeeee" stroke-width="1.5" />
+                                    <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="2" />
+                                </g>
+                                <circle class="pie-fill" id="pie-gusto" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" />
+                            </svg>
+                        </div>
+                        <div class="star-rating" data-field="gusto">
+                            <span class="star" data-value="1">🍕</span><span class="star" data-value="2">🍕</span><span class="star" data-value="3">🍕</span><span class="star" data-value="4">🍕</span><span class="star" data-value="5">🍕</span>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                        </div>
+                    </div>
+
+                    <div class="step" data-step="2">
+                        <label class="step-label">Com'è la <span>Croccantezza?</span><span style="display: block; margin-top: 0.3rem; font-size: 1.2em;">🥖</span></label>
+                        <div class="pizza-display">
+                            <svg viewBox="-50 -50 100 100" class="pizza-builder">
+                                <g class="empty-plate">
+                                    <circle cx="0" cy="0" r="49" fill="#fdfdfd" stroke="#e0e0e0" stroke-width="1" />
+                                    <circle cx="0" cy="0" r="35" fill="#ffffff" stroke="#eeeeee" stroke-width="1.5" />
+                                    <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="2" />
+                                </g>
+                                <circle class="pie-fill" id="pie-croccantezza" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" />
+                            </svg>
+                        </div>
+                        <div class="star-rating" data-field="croccantezza">
+                            <span class="star" data-value="1">🍕</span><span class="star" data-value="2">🍕</span><span class="star" data-value="3">🍕</span><span class="star" data-value="4">🍕</span><span class="star" data-value="5">🍕</span>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn-back" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+                            <button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                        </div>
+                    </div>
+
+                    <div class="step" data-step="3">
+                        <label class="step-label">Valuta il <span>Filamento!</span><span style="display: block; margin-top: 0.3rem; font-size: 1.2em;">🧀</span></label>
+                        <div class="pizza-display">
+                            <svg viewBox="-50 -50 100 100" class="pizza-builder">
+                                <g class="empty-plate">
+                                    <circle cx="0" cy="0" r="49" fill="#fdfdfd" stroke="#e0e0e0" stroke-width="1" />
+                                    <circle cx="0" cy="0" r="35" fill="#ffffff" stroke="#eeeeee" stroke-width="1.5" />
+                                    <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="2" />
+                                </g>
+                                <circle class="pie-fill" id="pie-filamento" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" />
+                            </svg>
+                        </div>
+                        <div class="star-rating" data-field="filamento">
+                            <span class="star" data-value="1">🍕</span><span class="star" data-value="2">🍕</span><span class="star" data-value="3">🍕</span><span class="star" data-value="4">🍕</span><span class="star" data-value="5">🍕</span>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn-back" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+                            <button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                        </div>
+                    </div>
+
+                    <div class="step" data-step="4">
+                        <label class="step-label">E alla <span>Vista?</span><span style="display: block; margin-top: 0.3rem; font-size: 1.2em;">👁️</span></label>
+                        <div class="pizza-display">
+                            <svg viewBox="-50 -50 100 100" class="pizza-builder">
+                                <g class="empty-plate">
+                                    <circle cx="0" cy="0" r="49" fill="#fdfdfd" stroke="#e0e0e0" stroke-width="1" />
+                                    <circle cx="0" cy="0" r="35" fill="#ffffff" stroke="#eeeeee" stroke-width="1.5" />
+                                    <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="2" />
+                                </g>
+                                <circle class="pie-fill" id="pie-vista" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" />
+                            </svg>
+                        </div>
+                        <div class="star-rating" data-field="vista">
+                            <span class="star" data-value="1">🍕</span><span class="star" data-value="2">🍕</span><span class="star" data-value="3">🍕</span><span class="star" data-value="4">🍕</span><span class="star" data-value="5">🍕</span>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn-back" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+                            <button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                        </div>
+                    </div>
+
+                    <div class="step" data-step="5">
+                        <label class="step-label">Qualità / <span>Prezzo?</span><span style="display: block; margin-top: 0.3rem; font-size: 1.2em;">💰</span></label>
+                        <div class="pizza-display">
+                            <svg viewBox="-50 -50 100 100" class="pizza-builder">
+                                <g class="empty-plate">
+                                    <circle cx="0" cy="0" r="49" fill="#fdfdfd" stroke="#e0e0e0" stroke-width="1" />
+                                    <circle cx="0" cy="0" r="35" fill="#ffffff" stroke="#eeeeee" stroke-width="1.5" />
+                                    <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="2" />
+                                </g>
+                                <circle class="pie-fill" id="pie-costo" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" />
+                            </svg>
+                        </div>
+                        <div class="star-rating" data-field="costo">
+                            <span class="star" data-value="1">🍕</span><span class="star" data-value="2">🍕</span><span class="star" data-value="3">🍕</span><span class="star" data-value="4">🍕</span><span class="star" data-value="5">🍕</span>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn-back" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+                            <button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Summary -->
+                    <div class="step" data-step="6">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffd700; text-align: center;">Panoramica Voti</h2>
+                        
+                        <div class="summary-list">
+                            <div class="summary-item">
+                                <span class="summary-label">Gusto</span>
+                                <div class="summary-visual">
+                                    <span id="sum-val-gusto" class="summary-val"></span>
+                                    <svg viewBox="-50 -50 100 100" class="pizza-mini"><circle class="pie-fill" id="sum-pie-gusto" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" /></svg>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Croccantezza</span>
+                                <div class="summary-visual">
+                                    <span id="sum-val-croccantezza" class="summary-val"></span>
+                                    <svg viewBox="-50 -50 100 100" class="pizza-mini"><circle class="pie-fill" id="sum-pie-croccantezza" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" /></svg>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Filamento</span>
+                                <div class="summary-visual">
+                                    <span id="sum-val-filamento" class="summary-val"></span>
+                                    <svg viewBox="-50 -50 100 100" class="pizza-mini"><circle class="pie-fill" id="sum-pie-filamento" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" /></svg>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Vista</span>
+                                <div class="summary-visual">
+                                    <span id="sum-val-vista" class="summary-val"></span>
+                                    <svg viewBox="-50 -50 100 100" class="pizza-mini"><circle class="pie-fill" id="sum-pie-vista" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" /></svg>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Qualità/Prezzo</span>
+                                <div class="summary-visual">
+                                    <span id="sum-val-costo" class="summary-val"></span>
+                                    <svg viewBox="-50 -50 100 100" class="pizza-mini"><circle class="pie-fill" id="sum-pie-costo" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" /></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1.5rem; margin-top: 1.5rem; justify-content: center; align-items: center;">
+                            <button type="button" class="btn btn-secondary" style="width: 55px; height: 55px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="goToStep(1)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button type="submit" class="btn btn-submit" id="submit-vote" style="width: 75px; height: 75px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <svg id="rocket-icon" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        
+        <!-- Leaderboard Panel -->
+        <div id="leaderboard-panel" class="glass-panel hidden" style="max-width: 800px; width: 90%; margin: 0 auto;">
+            <div id="leaderboard-waiting" class="text-center" style="padding: 2rem 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                
+                <h2 style="font-size: 2rem; margin-bottom: 1rem;">La giuria sta deliberando... ⏳</h2>
+                
+                <div style="display: flex; justify-content: center; align-items: center; margin: 3rem 0;">
+                    <div style="animation: spin 5s linear infinite; display: flex; justify-content: center; align-items: center;">
+                        <svg viewBox="-50 -50 100 100" style="width: 180px; height: 180px;">
+                            <circle cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 3rem;">L'amministratore svelerà presto i risultati finali.<br>Resta in attesa!</p>
+
+                <div class="fun-fact-bubble" style="margin-top: 2rem; margin-bottom: 0;">
+                    <p class="fun-fact-text" style="margin-top: 0.5rem; line-height: 1.4; color: #333;"></p>
+                </div>
+            </div>
+            
+            <div id="leaderboard-results" class="hidden text-center">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem; background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">IL PODIO</h2>
+                <div id="podium-container" style="display: flex; justify-content: center; align-items: flex-end; height: 300px; gap: 1rem; margin-bottom: 1rem;">
+                    <!-- JS populate -->
+                </div>
+                <div id="leaderboard-others" style="text-align: left;">
+                    <!-- Altri classificati -->
+                </div>
+                <button class="btn" style="margin-top: 2rem; background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); box-shadow: 0 6px 20px rgba(0, 114, 255, 0.3); font-weight: bold; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.2);" onclick="exitLeaderboard()">⬅️ Torna alla Votazione</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast">Voto registrato!</div>
+
+    <!-- Fun Vespa Button -->
+    <button type="button" class="btn-fun-vespa" onclick="triggerFunVespa()" title="Fai un giro in Vespa!">🛵</button>
+
+    <div id="flame-overlay"></div>
+        <!-- Vespa Transition -->
+        <div id="vespa-transition" class="hidden">
+            <div class="vespa-track">
+                <div class="vespa-wipe-block"></div>
+                <div class="vespa-svg-container">
+
+                    <div class="vespa-css-container">
+                            <div class="motors">
+                                <div class="body">
+                                    <div class="body top">
+                                        <div class="handle"></div>
+                                    </div>
+                                    <div class="body left"></div>
+                                    <div class="body right"></div>
+                                    <div class="body bottom"></div>
+                                    <div class="body back">
+                                        <div class="line"></div>
+                                    </div>
+                                    <div class="body seat"></div>
+                                    <div class="body fender"></div>
+                                </div>
+                                <div class="wheel">
+                                    <div class="wheel left"></div>
+                                    <div class="wheel right"></div>
+                                </div>
+                                <div class="pizza-boxes">
+                                    <div class="pizza-box"></div>
+                                    <div class="pizza-box"></div>
+                                    <div class="pizza-box"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
