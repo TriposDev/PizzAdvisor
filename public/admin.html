@@ -74,7 +74,31 @@
                 </ul>
             </div>
 
-
+            <!-- Configurazione Categorie -->
+            <div class="glass-panel">
+                <h2>⚙️ Configurazione Categorie</h2>
+                <form id="add-step-form">
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Nome Breve</label>
+                            <input type="text" id="step-name" required placeholder="Es: Gusto">
+                        </div>
+                        <div class="form-group" style="flex: 2; min-width: 200px;">
+                            <label>Domanda</label>
+                            <input type="text" id="step-question" required placeholder="Che voto daresti al Gusto?">
+                        </div>
+                        <div class="form-group" style="flex: 0.5; min-width: 80px;">
+                            <label>Emoji</label>
+                            <input type="text" id="step-emoji" required placeholder="😋">
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-step-btn" class="btn">Aggiungi Categoria</button>
+                </form>
+                
+                <ul id="steps-list" class="pizza-list">
+                    <!-- Steps inseriti tramite JS -->
+                </ul>
+            </div>
 
             <!-- Classifica -->
             <div class="glass-panel">
@@ -88,16 +112,8 @@
                 <div style="overflow-x: auto;">
                     <table class="leaderboard-table" id="leaderboard-table">
                         <thead id="leaderboard-head">
-                            <tr>
-                                <th>Pos</th>
-                                <th>Pizza</th>
-                                <th>Totale</th>
-                                <th>Voti</th>
-                                <th>Gusto</th>
-                                <th>Crocc.</th>
-                                <th>Filam.</th>
-                                <th>Vista</th>
-                                <th>Q/P</th>
+                            <tr id="leaderboard-head-tr">
+                                <!-- JS Populated -->
                             </tr>
                         </thead>
                         <tbody id="leaderboard-body">

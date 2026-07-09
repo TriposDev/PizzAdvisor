@@ -105,19 +105,112 @@ function switchPanel(panelToShow, skipAnimation = false) {
     }
 }
 
-const votes = {
-    taste: 0,
-    crunchiness: 0,
-    cheesePull: 0,
-    appearance: 0,
-    cost: 0
-};
-
-const totalSteps = 6;
+const votes = {};
+let totalSteps = 1;
 let currentStep = 1;
+let currentSettings = null;
+
+async function loadSettingsAndGenerateSteps() {
+    try {
+        const res = await fetch('/api/settings');
+        currentSettings = await res.json();
+        generateStepsHTML();
+    } catch (e) {
+        console.error("Errore nel caricamento delle impostazioni", e);
+    }
+}
+
+function generateStepsHTML() {
+    if (!currentSettings || !currentSettings.steps) return;
+    
+    const container = document.getElementById('steps-container');
+    container.innerHTML = '';
+    
+    const steps = currentSettings.steps;
+    totalSteps = steps.length + 1; // +1 for the summary step
+    
+    steps.forEach((step, index) => {
+        // Initialize votes object
+        votes[step.id] = 0;
+        
+        const stepNum = index + 1;
+        const isActive = stepNum === 1 ? 'active' : '';
+        
+        // Define buttons based on position
+        let buttonsHTML = '';
+        if (stepNum === 1) {
+            buttonsHTML = `<button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>`;
+        } else {
+            buttonsHTML = `
+                <button type="button" class="btn-back" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+                <button type="button" class="btn-forward disabled" onclick="goNext()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+            `;
+        }
+
+        const stepHTML = `
+            <div class="step ${isActive}" data-step="${stepNum}">
+                <label class="step-label">${step.question.replace(step.name, `<span>${step.name}</span>`)}<span style="display: block; margin-top: 0.3rem; font-size: 1.2em;">${step.emoji}</span></label>
+                <div class="pizza-display">
+                    <svg viewBox="-50 -50 100 100" class="pizza-builder">
+                        <g class="empty-plate">
+                            <circle cx="0" cy="0" r="49" fill="#fdfdfd" stroke="#e0e0e0" stroke-width="1" />
+                            <circle cx="0" cy="0" r="35" fill="#ffffff" stroke="#eeeeee" stroke-width="1.5" />
+                            <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="2" />
+                        </g>
+                        <circle class="pie-fill" id="pie-${step.id}" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" />
+                    </svg>
+                </div>
+                <div class="star-rating" data-field="${step.id}">
+                    <span class="star" data-value="1">🍕</span><span class="star" data-value="2">🍕</span><span class="star" data-value="3">🍕</span><span class="star" data-value="4">🍕</span><span class="star" data-value="5">🍕</span>
+                </div>
+                <div class="step-actions">
+                    ${buttonsHTML}
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', stepHTML);
+    });
+    
+    // Generate Summary Step
+    let summaryListHTML = '';
+    steps.forEach(step => {
+        summaryListHTML += `
+            <div class="summary-item">
+                <span class="summary-label">${step.name}</span>
+                <div class="summary-visual">
+                    <span id="sum-val-${step.id}" class="summary-val"></span>
+                    <svg viewBox="-50 -50 100 100" class="pizza-mini"><circle class="pie-fill" id="sum-pie-${step.id}" cx="0" cy="0" r="25" stroke="url(#pizzaPattern)" stroke-width="50" fill="none" stroke-dasharray="0 158" transform="rotate(-90)" /></svg>
+                </div>
+            </div>
+        `;
+    });
+    
+    const summaryStepHTML = `
+        <div class="step" data-step="${totalSteps}">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffd700; text-align: center;">Panoramica Voti</h2>
+            
+            <div class="summary-list">
+                ${summaryListHTML}
+            </div>
+
+            <div style="display: flex; gap: 1.5rem; margin-top: 1.5rem; justify-content: center; align-items: center;">
+                <button type="button" class="btn btn-secondary" style="width: 55px; height: 55px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="goToStep(1)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </button>
+                <button type="submit" class="btn btn-submit" id="submit-vote" style="width: 75px; height: 75px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <svg id="rocket-icon" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
+                </button>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', summaryStepHTML);
+    
+    attachStarListeners();
+}
 
 // Configura interazione fette di pizza alla partenza
-attachStarListeners();
+loadSettingsAndGenerateSteps();
+
 window.goToStep = function(stepNumber) {
     // Gestisce le classi CSS per le animazioni
     document.querySelectorAll('.step').forEach(step => {
@@ -238,7 +331,7 @@ voteForm.addEventListener('submit', async (e) => {
         const res = await fetch('/api/vote', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ voterId, ...votes })
+            body: JSON.stringify({ voterId, scores: votes })
         });
 
         const data = await res.json();
@@ -324,6 +417,7 @@ async function checkSession() {
                     
                     // Se la sessione è appena cambiata/avviata, resetta gli step e i voti per prepararsi alla nuova pizza
                     if (currentSessionId !== previousSessionId) {
+                        await loadSettingsAndGenerateSteps(); // Ricarica le categorie nel caso fossero cambiate da admin
                         document.querySelectorAll('.star-rating').forEach(div => updateStars(div, 0));
                         Object.keys(votes).forEach(k => {
                             votes[k] = 0;

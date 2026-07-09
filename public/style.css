@@ -982,3 +982,19 @@ input:focus, select:focus { outline: none; border-color: var(--accent-color); bo
     opacity: 0;
   }
 }
+
+/* Drag and Drop Styles */
+.pizza-item[draggable="true"] {
+    cursor: grab;
+}
+.pizza-item[draggable="true"]:active {
+    cursor: grabbing;
+}
+.pizza-item.dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+    transition: transform 0.2s;
+}
+.pizza-item.drag-over {
+    border-top: 2px dashed var(--primary-color);
+}

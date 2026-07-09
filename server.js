@@ -43,19 +43,32 @@ app.get('/api/session', (req, res) => {
     res.json(data.session);
 });
 
+app.get('/api/settings', (req, res) => {
+    const data = readData();
+    res.json(data.settings);
+});
+
 app.post('/api/vote', (req, res) => {
     const data = readData();
     if (!data.session.active || !data.session.currentPizzaId) {
         return res.status(400).json({ error: 'La sessione di votazione non è attiva.' });
     }
 
-    const { voterId, taste, crunchiness, cheesePull, appearance, cost } = req.body;
+    const { voterId, scores } = req.body;
     
-    if (!voterId || taste === undefined || crunchiness === undefined || cheesePull === undefined || appearance === undefined || cost === undefined) {
+    if (!voterId || !scores || Object.keys(scores).length === 0) {
         return res.status(400).json({ error: 'Tutti i campi sono obbligatori.' });
     }
 
     const pizzaId = data.session.currentPizzaId;
+    const steps = data.settings.steps;
+
+    // Check if all configured steps are voted
+    for (const step of steps) {
+        if (scores[step.id] === undefined) {
+            return res.status(400).json({ error: `Voto mancante per la categoria: ${step.name}.` });
+        }
+    }
 
     // Controlla se l'utente ha già votato questa pizza
     const existingVoteIndex = data.votes.findIndex(v => v.pizzaId === pizzaId && v.voterId === voterId);
@@ -63,7 +76,7 @@ app.post('/api/vote', (req, res) => {
     const newVote = {
         pizzaId,
         voterId,
-        taste, crunchiness, cheesePull, appearance, cost,
+        scores,
         timestamp: new Date().toISOString()
     };
 
@@ -88,7 +101,17 @@ app.post('/api/admin/auth', (req, res) => {
     }
 });
 
-
+app.put('/api/admin/settings', adminAuth, (req, res) => {
+    const data = readData();
+    const { settings } = req.body;
+    if (settings && settings.steps) {
+        data.settings = settings;
+        writeData(data);
+        res.json({ success: true, settings: data.settings });
+    } else {
+        res.status(400).json({ error: 'Impostazioni non valide.' });
+    }
+});
 
 app.get('/api/admin/pizzas', adminAuth, (req, res) => {
     const data = readData();
@@ -188,6 +211,7 @@ app.post('/api/admin/toggle-results', adminAuth, (req, res) => {
 
 app.get('/api/admin/leaderboard', adminAuth, (req, res) => {
     const data = readData();
+    const steps = data.settings.steps;
     
     const scores = data.pizzas.map(pizza => {
         const pizzaVotes = data.votes.filter(v => v.pizzaId === pizza.id);
@@ -195,24 +219,23 @@ app.get('/api/admin/leaderboard', adminAuth, (req, res) => {
         
         if (count === 0) return { ...pizza, totalScore: 0, count: 0 };
         
-        const sum = pizzaVotes.reduce((acc, v) => ({
-            taste: acc.taste + (v.taste || (v.scores && v.scores.taste) || 0),
-            crunchiness: acc.crunchiness + (v.crunchiness || (v.scores && v.scores.crunchiness) || 0),
-            cheesePull: acc.cheesePull + (v.cheesePull || (v.scores && v.scores.cheesePull) || 0),
-            appearance: acc.appearance + (v.appearance || (v.scores && v.scores.appearance) || 0),
-            cost: acc.cost + (v.cost || (v.scores && v.scores.cost) || 0)
-        }), { taste: 0, crunchiness: 0, cheesePull: 0, appearance: 0, cost: 0 });
+        const initialSum = {};
+        steps.forEach(s => initialSum[s.id] = 0);
+
+        const sum = pizzaVotes.reduce((acc, v) => {
+            steps.forEach(s => {
+                const val = (v.scores && v.scores[s.id] !== undefined) ? v.scores[s.id] : (v[s.id] || 0);
+                acc[s.id] += val;
+            });
+            return acc;
+        }, initialSum);
         
-        const avg = {
-            taste: sum.taste / count,
-            crunchiness: sum.crunchiness / count,
-            cheesePull: sum.cheesePull / count,
-            appearance: sum.appearance / count,
-            cost: sum.cost / count
-        };
-        
-        // Il punteggio totale ora è la somma di tutti i voti anziché la media
-        const totalScore = sum.taste + sum.crunchiness + sum.cheesePull + sum.appearance + sum.cost;
+        const avg = {};
+        let totalScore = 0;
+        steps.forEach(s => {
+            avg[s.id] = sum[s.id] / count;
+            totalScore += sum[s.id];
+        });
         
         return {
             ...pizza,
